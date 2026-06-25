@@ -1,7 +1,7 @@
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { useState } from "react";
-import "./CalendarView.css"; // Assuming you have some CSS for the dot indicator
+import "./CalendarView.css"; 
 
 export default function CalendarView({ tasks }) {
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -38,7 +38,7 @@ export default function CalendarView({ tasks }) {
             />
             <ul className="selected-tasks">
                 {selectedTasks.map(task => (
-                    <li key={task.id}>{task.title} — {task.status}</li>
+                    <li key={task.id}>{task.title}: <span className="task-status">{task.status}</span></li>
                 ))}
             </ul>
         </div>

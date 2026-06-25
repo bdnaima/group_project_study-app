@@ -36,7 +36,7 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 1rem;
-  border: 1px solid #e0e0e0;
+  border: 2px solid #3f3f3f;
   border-radius: 10px;
   background: #fff;
 }
@@ -54,11 +54,12 @@
 .deadline-title {
   font-size: 0.9rem;
   font-weight: 500;
+  color: #444444;
 }
 
 .deadline-due {
   font-size: 0.8rem;
-  color: #666;
+  color: #444444;
   font-weight: 600;
 }
 
@@ -70,6 +71,17 @@
   white-space: nowrap;
 }
 
-.status-in-progress { border-color: #f0a500; color: #f0a500; }
-.status-todo        { border-color: #999;    color: #999; }
-.status-done        { border-color: #4caf50; color: #4caf50; }
+.status-in-progress { 
+  border-color: #976700; 
+  color: #976700; 
+}
+
+.status-todo {
+  border-color: #383838;
+  color: #383838;
+}
+
+.status-done {
+  border-color: #4caf50;
+  color: #4caf50;
+}

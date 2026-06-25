@@ -11,6 +11,10 @@ const placeholderTasks = [
 
 export default function Dashboard() {
   const tasks = placeholderTasks;
+
+  // localStorage to persist tasks across sessions
+  // const tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+
   const stats = {
     total: tasks.length,
     inProgress: tasks.filter(t => t.status === "in-progress").length,
@@ -22,11 +26,16 @@ export default function Dashboard() {
       <div className="dashboard-header">
         <h1 className="dashboard-title">Your Dashboard</h1>
         <p className="dashboard-subtitle">Welcome back, Student!</p>
+        <p className="dashboard-subtext">Here's what's happening with your studies.</p>
       </div>
-      <StatsBar stats={stats} />
-      <div className="dashboard-main">
-        <DeadlineList tasks={tasks} />
-        <CalendarView tasks={tasks} />
+      <div className="dashboard-body">
+        <div className="dashboard-left">
+          <StatsBar stats={stats} />
+          <DeadlineList tasks={tasks} />
+        </div>
+        <div className="dashboard-right">
+          <CalendarView tasks={tasks} />
+        </div>
       </div>
     </div>
   );
