@@ -1,8 +1,30 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FaBook } from "react-icons/fa";
 import "./Auth.css";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+
+    const foundUser = users.find(
+      (user) => user.email === email && user.password === password,
+    );
+
+    if (!foundUser) {
+      alert("Invalid credentials. Please try again.");
+      return;
+    }
+
+    localStorage.setItem("currentUser", JSON.stringify(foundUser));
+    navigate("/home");
+  };
   return (
     <div className="auth-page">
       <div className="auth-card">
@@ -15,10 +37,20 @@ const Login = () => {
         <h2 className="title">Study Planner</h2>
         <p className="subtitle">Plan your tasks. Achieve your goals.</p>
 
-        <form className="auth-form">
-          <input type="email" placeholder="Email" />
+        <form className="auth-form" onSubmit={handleLogin}>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-          <input type="password" placeholder="Password" />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
           <div className="auth-options">
             <label>
