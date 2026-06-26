@@ -1,0 +1,43 @@
+import StatsBar from '../components/dashboard/Statsbar.jsx';
+import DeadlineList from '../components/dashboard/DeadlineList';
+import CalendarView from '../components/dashboard/CalendarView';
+import './Dashboard.css';
+
+// Remove this placeholder data and use localStorage or an API call to fetch real tasks in a production environment.
+const placeholderTasks = [
+  { id: 1, title: "Chemistry lab report", subject: "Chemistry", dueDate: "2026-06-15", status: "in-progress" },
+  { id: 2, title: "English essay", subject: "English", dueDate: "2026-06-20", status: "todo" },
+  { id: 3, title: "Math page 7", subject: "Math", dueDate: "2026-06-22", status: "todo" },
+];
+
+export default function Dashboard() {
+  const tasks = placeholderTasks;
+
+  // localStorage to persist tasks across sessions
+  // const tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+
+  const stats = {
+    total: tasks.length,
+    inProgress: tasks.filter(t => t.status === "in-progress").length,
+    completed: tasks.filter(t => t.status === "done").length,
+  };
+
+  return (
+    <div className="dashboard">
+      <div className="dashboard-header">
+        <h1 className="dashboard-title">Your Dashboard</h1>
+        <p className="dashboard-subtitle">Welcome back, Student!</p>
+        <p className="dashboard-subtext">Here's what's happening with your studies.</p>
+      </div>
+      <div className="dashboard-body">
+        <div className="dashboard-left">
+          <StatsBar stats={stats} />
+          <DeadlineList tasks={tasks} />
+        </div>
+        <div className="dashboard-right">
+          <CalendarView tasks={tasks} />
+        </div>
+      </div>
+    </div>
+  );
+}
