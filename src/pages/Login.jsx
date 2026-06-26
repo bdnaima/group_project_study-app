@@ -25,6 +25,7 @@ const Login = () => {
     localStorage.setItem("currentUser", JSON.stringify(foundUser));
     navigate("/dashboard");
   };
+
   return (
     <div className="auth-page">
       <div className="auth-card">
@@ -58,7 +59,7 @@ const Login = () => {
               Remember me
             </label>
 
-            <a href="/">Forgot password?</a>
+            <Link to="/forgotPassword">Forgot password?</Link>
           </div>
 
           <button type="submit">Login</button>

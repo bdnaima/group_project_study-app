@@ -3,6 +3,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Tasks from "./pages/Tasks";
+import ForgotPassword from "./pages/ForgotPassword";
 import "./App.css";
 
 const App = () => {
@@ -13,6 +14,7 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/tasks" element={<Tasks />} />
+        <Route path="/forgotPassword" element={<ForgotPassword />} />
       </Routes>
     </BrowserRouter>
   );
