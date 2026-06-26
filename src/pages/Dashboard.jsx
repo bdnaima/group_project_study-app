@@ -3,6 +3,7 @@ import DeadlineList from '../components/dashboard/DeadlineList';
 import CalendarView from '../components/dashboard/CalendarView';
 import './Dashboard.css';
 
+// Remove this placeholder data and use localStorage or an API call to fetch real tasks in a production environment.
 const placeholderTasks = [
   { id: 1, title: "Chemistry lab report", subject: "Chemistry", dueDate: "2026-06-15", status: "in-progress" },
   { id: 2, title: "English essay", subject: "English", dueDate: "2026-06-20", status: "todo" },
