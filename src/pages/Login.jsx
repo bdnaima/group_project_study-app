@@ -23,7 +23,7 @@ const Login = () => {
     }
 
     localStorage.setItem("currentUser", JSON.stringify(foundUser));
-    navigate("/home");
+    navigate("/dashboard");
   };
   return (
     <div className="auth-page">
