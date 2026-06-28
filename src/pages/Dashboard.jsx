@@ -12,11 +12,11 @@ export default function Dashboard() {
     subject: task.category,
     dueDate: task.dueDate,
     status: task.status === "Done" ? "done"
-          : task.status === "Todo" ? "todo"
-          : "in-progress",
+      : task.status === "Todo" ? "todo"
+        : "in-progress",
   }));
 
-    const stats = {
+  const stats = {
     total: tasks.length,
     inProgress: tasks.filter(t => t.status === "in-progress").length,
     completed: tasks.filter(t => t.status === "done").length,
