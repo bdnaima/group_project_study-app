@@ -2,16 +2,16 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 function Navbar() {
     const navigate = useNavigate();
-    const location = useLocation(); // Håller koll på vilken sida användaren är på just nu
+    const location = useLocation();
 
-    // Kollar om användaren är på login- eller register-sidan
+    // Kolla om vi är på login eller register
     const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
 
     const handleLogout = () => {
         navigate('/login');
     };
 
-    // Funktioner för animationer vid hover
+    // Hover animationer för länkar
     const handleMouseEnterLink = (e) => {
         e.target.style.opacity = '0.6';
         e.target.style.transform = 'translateY(-1px)';
@@ -22,6 +22,7 @@ function Navbar() {
         e.target.style.transform = 'translateY(0)';
     };
 
+    // Hover animationer för knapp
     const handleMouseEnterBtn = (e) => {
         e.target.style.backgroundColor = '#333';
         e.target.style.transform = 'scale(1.05)';
@@ -38,27 +39,27 @@ function Navbar() {
                 StudyApp
             </div>
 
-            {/* Om användaren är på en auth-sida, ritas inte länkarna och knappen ut alls */}
+            {/* Göm länkarna om användaren är på login/register */}
             {!isAuthPage && (
                 <div style={styles.navLinks}>
-                    <Link 
-                        to="/dashboard" 
+                    <Link
+                        to="/dashboard"
                         style={styles.link}
                         onMouseEnter={handleMouseEnterLink}
                         onMouseLeave={handleMouseLeaveLink}
                     >
                         Dashboard
                     </Link>
-                    <Link 
-                        to="/tasks" 
+                    <Link
+                        to="/tasks"
                         style={styles.link}
                         onMouseEnter={handleMouseEnterLink}
                         onMouseLeave={handleMouseLeaveLink}
                     >
                         Tasks
                     </Link>
-                    <button 
-                        onClick={handleLogout} 
+                    <button
+                        onClick={handleLogout}
                         style={styles.logoutBtn}
                         onMouseEnter={handleMouseEnterBtn}
                         onMouseLeave={handleMouseLeaveBtn}
@@ -76,10 +77,12 @@ const styles = {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: '15px 30px',
+        padding: '15px 20px',
         backgroundColor: '#fff',
         borderBottom: '2px solid #000',
-        fontFamily: 'sans-serif'
+        fontFamily: 'sans-serif',
+        flexWrap: 'wrap',
+        rowGap: '10px'
     },
     logo: {
         fontSize: '20px',
@@ -89,7 +92,8 @@ const styles = {
     navLinks: {
         display: 'flex',
         alignItems: 'center',
-        gap: '20px'
+        gap: '15px',
+        flexWrap: 'wrap'
     },
     link: {
         textDecoration: 'none',
@@ -104,7 +108,7 @@ const styles = {
         color: '#fff',
         border: 'none',
         borderRadius: '8px',
-        padding: '8px 16px',
+        padding: '8px 14px',
         fontSize: '14px',
         fontWeight: 'bold',
         cursor: 'pointer',
