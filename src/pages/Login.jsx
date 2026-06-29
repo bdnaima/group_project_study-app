@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaBook } from "react-icons/fa";
 import "./Auth.css";
@@ -7,6 +7,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -22,9 +23,24 @@ const Login = () => {
       return;
     }
 
+    if (rememberMe) {
+      localStorage.setItem("rememberedEmail", email);
+    } else {
+      localStorage.removeItem("rememberedEmail");
+    }
+
     localStorage.setItem("currentUser", JSON.stringify(foundUser));
     navigate("/dashboard");
   };
+
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("rememberedEmail");
+
+    if (savedEmail) {
+      setEmail(savedEmail);
+      setRememberMe(true);
+    }
+  }, []);
 
   return (
     <div className="auth-page">
@@ -55,7 +71,11 @@ const Login = () => {
 
           <div className="auth-options">
             <label>
-              <input type="checkbox" />
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+              />
               Remember me
             </label>
 
