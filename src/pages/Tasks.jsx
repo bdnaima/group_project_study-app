@@ -1,31 +1,31 @@
 import { useState, useEffect } from 'react';
 
 function Tasks() {
-    // Load existing tasks from local storage on mount
+    // Hämta sparade tasks eller starta med tom array
     const [tasks, setTasks] = useState(() => {
         const savedTasks = localStorage.getItem('my_study_tasks');
         return savedTasks ? JSON.parse(savedTasks) : [];
     });
 
-    // Form inputs and toggle states
+    // States för formuläret
     const [showForm, setShowForm] = useState(false);
     const [isEditing, setIsEditing] = useState(null);
     const [newTitle, setNewTitle] = useState('');
     const [newCategory, setNewCategory] = useState('General');
     const [newDueDate, setNewDueDate] = useState('');
 
-    // Filter and sort criteria states
+    // Sök, filtrering och sortering
     const [searchQuery, setSearchQuery] = useState('');
     const [statusFilter, setStatusFilter] = useState('All');
     const [categoryFilter, setCategoryFilter] = useState('All');
     const [sortBy, setSortBy] = useState('None');
 
-    // Sync state changes with localStorage
+    // Spara i localStorage när tasks ändras
     useEffect(() => {
         localStorage.setItem('my_study_tasks', JSON.stringify(tasks));
     }, [tasks]);
 
-    // Formats calendar string (YYYY-MM-DD) into user-friendly display (DD/MM/YY)
+    // Formatera datum till DD/MM/YY
     const formatDateToDisplay = (dateString) => {
         if (!dateString) return 'No due date';
         const parts = dateString.split('-');
@@ -34,7 +34,7 @@ function Tasks() {
         return `${parts[2]}/${parts[1]}/${yearShort}`;
     };
 
-    // Submits form data for either a new task or a task update
+    // Spara ny eller redigerad task
     const handleSaveTask = (e) => {
         e.preventDefault();
         if (!newTitle.trim()) return;
@@ -47,7 +47,6 @@ function Tasks() {
             ));
             setIsEditing(null);
         } else {
-            // Safely call the isolated utility function from below
             const uniqueId = generateSafeId();
 
             const newTask = {
@@ -67,18 +66,21 @@ function Tasks() {
         setShowForm(false);
     };
 
+    // Färger för kategorier
     const getCategoryColor = (cat) => {
         if (cat === 'Chemistry') return '#ff4d4d';
         if (cat === 'Programming') return '#4dabf7';
         return '#888888';
     };
 
+    // Markera som klar / inte klar
     const handleToggleComplete = (id) => {
         setTasks(tasks.map(task =>
             task.id === id ? { ...task, completed: !task.completed, status: !task.completed ? 'Done' : 'Todo' } : task
         ));
     };
 
+    // Ändra en task
     const handleStartEdit = (task) => {
         setIsEditing(task.id);
         setNewTitle(task.title);
@@ -87,13 +89,14 @@ function Tasks() {
         setShowForm(true);
     };
 
+    // Ta bort task
     const handleDeleteTask = (id) => {
         setTasks(tasks.filter(task => task.id !== id));
     };
 
     const uniqueCategories = ['All', ...new Set(tasks.map(task => task.category))];
 
-    // Filter tasks based on current search, status, and category selectors
+    // Sök och filtrering
     const filteredTasks = tasks.filter(task => {
         const matchesSearch = task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
             task.category.toLowerCase().includes(searchQuery.toLowerCase());
@@ -106,7 +109,7 @@ function Tasks() {
         return matchesSearch && matchesStatus && matchesCategory;
     });
 
-    // Sort the filtered results dynamically
+    // Sortering
     const sortedTasks = [...filteredTasks].sort((a, b) => {
         if (sortBy === 'Name') {
             return a.title.localeCompare(b.title);
@@ -123,7 +126,6 @@ function Tasks() {
         <div style={styles.container}>
             <h1 style={styles.pageTitle}>Tasks</h1>
 
-            {/* Search Bar */}
             <div style={styles.searchContainer}>
                 <span style={styles.searchIcon}>🔍</span>
                 <input
@@ -135,7 +137,6 @@ function Tasks() {
                 />
             </div>
 
-            {/* Active Filters Row */}
             <div style={styles.filtersRow}>
                 <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} style={styles.dropdown}>
                     <option value="All">All status</option>
@@ -156,7 +157,6 @@ function Tasks() {
                 </select>
             </div>
 
-            {/* Dynamic Tasks List */}
             <div style={styles.taskList}>
                 {sortedTasks.length === 0 ? (
                     <div style={styles.emptyState}>
@@ -207,7 +207,6 @@ function Tasks() {
                 )}
             </div>
 
-            {/* Add/Edit Task Form Box */}
             {showForm && (
                 <form onSubmit={handleSaveTask} style={styles.formCard}>
                     <h3 style={{ margin: '0 0 10px 0', color: '#000' }}>
@@ -221,11 +220,11 @@ function Tasks() {
                         style={styles.formInput}
                         required
                     />
-                    <div style={{ display: 'flex', gap: '10px' }}>
+                    <div style={styles.formRowMobile}>
                         <select
                             value={newCategory}
                             onChange={(e) => setNewCategory(e.target.value)}
-                            style={styles.formInput}
+                            style={styles.formInputSplit}
                         >
                             <option value="General">General</option>
                             <option value="Chemistry">Chemistry</option>
@@ -236,7 +235,7 @@ function Tasks() {
                             type="date"
                             value={newDueDate}
                             onChange={(e) => setNewDueDate(e.target.value)}
-                            style={styles.formInput}
+                            style={styles.formInputSplit}
                             required
                         />
                     </div>
@@ -249,7 +248,6 @@ function Tasks() {
                 </form>
             )}
 
-            {/* Main Trigger Button */}
             {!showForm && (
                 <button style={styles.addButton} onClick={() => setShowForm(true)}>
                     + Add new task
@@ -260,25 +258,25 @@ function Tasks() {
 }
 
 const styles = {
-    container: { maxWidth: '500px', margin: '0 auto', padding: '20px', fontFamily: 'sans-serif', backgroundColor: '#fff' },
+    container: { maxWidth: '500px', margin: '0 auto', padding: '15px', fontFamily: 'sans-serif', backgroundColor: '#fff', boxSizing: 'border-box' },
     pageTitle: { textAlign: 'center', fontSize: '26px', marginBottom: '20px', color: '#000', fontWeight: 'bold' },
     searchContainer: { display: 'flex', alignItems: 'center', border: '2px solid #000', borderRadius: '12px', padding: '8px 12px', marginBottom: '15px', backgroundColor: '#fff' },
     searchIcon: { marginRight: '8px', color: '#000' },
     searchInput: { border: 'none', outline: 'none', width: '100%', fontSize: '16px', backgroundColor: '#fff', color: '#000' },
-    filtersRow: { display: 'flex', gap: '10px', marginBottom: '20px' },
-    dropdown: { flex: 1, padding: '10px', border: '2px solid #000', borderRadius: '12px', backgroundColor: '#fff', fontSize: '14px', color: '#000', cursor: 'pointer' },
+    filtersRow: { display: 'flex', gap: '10px', marginBottom: '20px', flexWrap: 'wrap' },
+    dropdown: { flex: '1 1 130px', minWidth: '130px', padding: '10px', border: '2px solid #000', borderRadius: '12px', backgroundColor: '#fff', fontSize: '14px', color: '#000', cursor: 'pointer' },
     taskList: { display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '25px' },
-    taskCard: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', border: '2px solid #000', borderRadius: '18px', padding: '15px', transition: 'all 0.2s ease' },
-    leftSection: { display: 'flex', alignItems: 'flex-start', gap: '15px' },
-    checkboxCircle: { width: '24px', height: '24px', border: '2px solid #000', borderRadius: '50%', marginTop: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' },
+    taskCard: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', border: '2px solid #000', borderRadius: '18px', padding: '15px', transition: 'all 0.2s ease', gap: '10px' },
+    leftSection: { display: 'flex', alignItems: 'flex-start', gap: '12px' },
+    checkboxCircle: { width: '24px', height: '24px', border: '2px solid #000', borderRadius: '50%', marginTop: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 },
     checkMark: { color: '#fff', fontSize: '14px', fontWeight: 'bold' },
     taskDetails: { display: 'flex', flexDirection: 'column', gap: '4px' },
-    taskTitle: { margin: 0, fontSize: '18px', fontWeight: '700', color: '#111' },
+    taskTitle: { margin: 0, fontSize: '18px', fontWeight: '700', color: '#111', wordBreak: 'break-word' },
     categoryRow: { display: 'flex', alignItems: 'center', gap: '6px' },
     colorDot: { width: '8px', height: '8px', borderRadius: '50%' },
     categoryText: { fontSize: '13px', color: '#333', fontWeight: '500' },
     dueDate: { margin: '4px 0 0 0', fontSize: '12px', fontWeight: 'bold', color: '#555' },
-    rightSection: { display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'space-between', height: '65px' },
+    rightSection: { display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'space-between', height: '65px', flexShrink: 0 },
     statusPill: { fontSize: '11px', border: '1px solid #000', borderRadius: '12px', padding: '3px 10px', fontWeight: '600', color: '#000' },
     actionButtons: { display: 'flex', gap: '8px' },
     iconButton: { background: 'none', border: 'none', cursor: 'pointer', fontSize: '16px', padding: 0 },
@@ -286,11 +284,13 @@ const styles = {
     emptyState: { textAlign: 'center', padding: '30px', border: '2px dashed #ccc', borderRadius: '18px', color: '#666', fontSize: '15px' },
     formCard: { border: '2px solid #000', borderRadius: '18px', padding: '15px', marginBottom: '15px', backgroundColor: '#fff' },
     formInput: { width: '100%', padding: '10px', marginBottom: '10px', border: '1px solid #000', borderRadius: '8px', boxSizing: 'border-box', backgroundColor: '#fff', color: '#000' },
+    formRowMobile: { display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '10px' },
+    formInputSplit: { flex: '1 1 140px', padding: '10px', border: '1px solid #000', borderRadius: '8px', boxSizing: 'border-box', backgroundColor: '#fff', color: '#000' },
     formSaveBtn: { flex: 1, backgroundColor: '#000', color: '#fff', border: 'none', padding: '10px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' },
     formCancelBtn: { backgroundColor: '#fff', color: '#000', border: '1px solid #000', padding: '10px', borderRadius: '8px', cursor: 'pointer' }
 };
 
-// Isolated pure utility helper for safe string IDs
+// Generera slumpat ID
 function generateSafeId() {
     return (
         Date.now().toString(36) +
