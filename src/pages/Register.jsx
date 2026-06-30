@@ -8,13 +8,14 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleRegister = (e) => {
     e.preventDefault();
 
     // Check if passwords match
     if (password !== confirmPassword) {
-      alert("Passwords do not match!");
+      setErrorMsg("Passwords do not match! Try again.");
       return;
     }
 
@@ -24,7 +25,7 @@ const Register = () => {
     // Check if email already exists
     const existingUsers = users.find((user) => user.email === email);
     if (existingUsers) {
-      alert("Email already exists!");
+      setErrorMsg("An account with this email already exists.");
       return;
     }
 
@@ -40,6 +41,7 @@ const Register = () => {
 
     //Save to localstorage
     localStorage.setItem("users", JSON.stringify(users));
+    setErrorMsg("");
     navigate("/login");
   };
   return (
@@ -88,6 +90,7 @@ const Register = () => {
           />
 
           <button type="submit">Sign Up</button>
+          {errorMsg && <div className="errorMsg">{errorMsg}</div>}
         </form>
 
         <p className="switch-auth">
