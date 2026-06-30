@@ -85,11 +85,14 @@
 
 .calendar-wrapper .react-calendar__tile--now {
   background: #cacaca;
+  color: #111;
+  font-weight: 600;
 }
 
 .calendar-wrapper .react-calendar__tile--active {
-  background: #4a90e2;
-  color: #fff;
+  background: #cacaca;
+  color: #111;
+  font-weight: 600;
 }
 
 .calendar-wrapper .react-calendar__tile:hover {
