@@ -14,7 +14,7 @@ export default function Dashboard() {
     status: task.status === "Done" ? "done"
       : task.status === "Todo" ? "todo"
         : "in-progress",
-  }));
+  })).sort((a, b) => a.dueDate.localeCompare(b.dueDate));
 
   const stats = {
     total: tasks.length,

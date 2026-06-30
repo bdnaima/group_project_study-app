@@ -85,3 +85,17 @@
   border-color: #4caf50;
   color: #4caf50;
 }
+
+
+.view-all-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #555;
+  padding: 0;
+}
+
+.view-all-btn:hover {
+  text-decoration: underline;
+}
