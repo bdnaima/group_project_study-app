@@ -3,7 +3,6 @@ import './DeadlineList.css';
 
 const statusLabel = {
   "in-progress": "In progress",
-  "todo": "To do",
   "done": "Done",
 };
 

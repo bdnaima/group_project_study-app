@@ -11,9 +11,7 @@ export default function Dashboard() {
     title: task.title,
     subject: task.category,
     dueDate: task.dueDate,
-    status: task.status === "Done" ? "done"
-      : task.status === "Todo" ? "todo"
-        : "in-progress",
+    status: task.status === "Done" ? "done" : "in-progress",
   })).sort((a, b) => a.dueDate.localeCompare(b.dueDate));
 
   const stats = {
