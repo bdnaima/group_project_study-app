@@ -20,10 +20,21 @@ function Tasks() {
     const [categoryFilter, setCategoryFilter] = useState('All');
     const [sortBy, setSortBy] = useState('None');
 
+    // State för popup/bekräftelse-notis
+    const [notification, setNotification] = useState('');
+
     // Spara i localStorage när tasks ändras
     useEffect(() => {
         localStorage.setItem('my_study_tasks', JSON.stringify(tasks));
     }, [tasks]);
+
+    // Funktion för att visa en bekräftelse som försvinner efter 3 sekunder
+    const showNotice = (message) => {
+        setNotification(message);
+        setTimeout(() => {
+            setNotification('');
+        }, 3000);
+    };
 
     // Formatera datum till DD/MM/YY
     const formatDateToDisplay = (dateString) => {
@@ -46,6 +57,7 @@ function Tasks() {
                     : task
             ));
             setIsEditing(null);
+            showNotice('✨ Task updated successfully!');
         } else {
             const uniqueId = generateSafeId();
 
@@ -59,6 +71,7 @@ function Tasks() {
                 completed: false
             };
             setTasks([...tasks, newTask]);
+            showNotice('✅ Task added successfully!');
         }
 
         setNewTitle('');
@@ -66,11 +79,20 @@ function Tasks() {
         setShowForm(false);
     };
 
-    // Färger för kategorier
+    // Färger för olika kategorier
     const getCategoryColor = (cat) => {
-        if (cat === 'Chemistry') return '#ff4d4d';
-        if (cat === 'Programming') return '#4dabf7';
-        return '#888888';
+        if (cat === 'Chemistry') return '#ff5c5c';  
+        if (cat === 'Programming') return '#339af0';
+        if (cat === 'Mathematics') return '#ff922b'; 
+        if (cat === 'Biology') return '#51cf66';     
+        if (cat === 'Languages') return '#ae3ec9';   
+        if (cat === 'History') return '#8c6239';     
+        if (cat === 'Physics') return '#ffd43b';     
+        if (cat === 'Art') return '#f06595';         
+        if (cat === 'Music') return '#4c6ef5';       
+        if (cat === 'Gymnastics') return '#20c997';  
+        if (cat === 'Geography') return '#0c8599';    
+        return '#868e96';                            
     };
 
     // Markera som klar / inte klar
@@ -92,6 +114,7 @@ function Tasks() {
     // Ta bort task
     const handleDeleteTask = (id) => {
         setTasks(tasks.filter(task => task.id !== id));
+        showNotice('🗑️ Task deleted successfully!');
     };
 
     const uniqueCategories = ['All', ...new Set(tasks.map(task => task.category))];
@@ -124,6 +147,13 @@ function Tasks() {
 
     return (
         <div style={styles.container}>
+            {/* Bekräftelsebar högst upp (visas bara om det finns ett meddelande) */}
+            {notification && (
+                <div style={styles.notificationBar}>
+                    {notification}
+                </div>
+            )}
+
             <h1 style={styles.pageTitle}>Tasks</h1>
 
             <div style={styles.searchContainer}>
@@ -225,10 +255,19 @@ function Tasks() {
                             value={newCategory}
                             onChange={(e) => setNewCategory(e.target.value)}
                             style={styles.formInputSplit}
-                        >
+                        > {/* Drop down menu for categories */}
                             <option value="General">General</option>
+                            <option value="Mathematics">Mathematics</option>
                             <option value="Chemistry">Chemistry</option>
+                            <option value="Biology">Biology</option>
                             <option value="Programming">Programming</option>
+                            <option value="Languages">Languages</option>
+                            <option value="History">History</option>
+                            <option value="Physics">Physics</option>
+                            <option value="Art">Art</option>
+                            <option value="Music">Music</option>
+                            <option value="Gymnastics">Gym</option>
+                            <option value="Geography">Geography</option>"
                         </select>
 
                         <input
@@ -258,13 +297,14 @@ function Tasks() {
 }
 
 const styles = {
-    container: { maxWidth: '500px', margin: '0 auto', padding: '15px', fontFamily: 'sans-serif', backgroundColor: '#fff', boxSizing: 'border-box' },
+    container: { maxWidth: '500px', margin: '0 auto', padding: '15px', fontFamily: 'sans-serif', backgroundColor: '#fff', boxSizing: 'border-box', position: 'relative' },
+    notificationBar: { position: 'fixed', top: '80px', left: '50%', transform: 'translateX(-50%)', backgroundColor: '#fff', border: '2px solid #000', borderRadius: '12px', padding: '12px 24px', fontWeight: 'bold', fontSize: '14px', color: '#000', boxShadow: '4px 4px 0px #000', zIndex: 1000, animation: 'fadeIn 0.2s ease', textAlign: 'center', minWidth: '250px' },
     pageTitle: { textAlign: 'center', fontSize: '26px', marginBottom: '20px', color: '#000', fontWeight: 'bold' },
     searchContainer: { display: 'flex', alignItems: 'center', border: '2px solid #000', borderRadius: '12px', padding: '8px 12px', marginBottom: '15px', backgroundColor: '#fff' },
     searchIcon: { marginRight: '8px', color: '#000' },
     searchInput: { border: 'none', outline: 'none', width: '100%', fontSize: '16px', backgroundColor: '#fff', color: '#000' },
-    filtersRow: { display: 'flex', gap: '10px', marginBottom: '20px', flexWrap: 'wrap' },
-    dropdown: { flex: '1 1 130px', minWidth: '130px', padding: '10px', border: '2px solid #000', borderRadius: '12px', backgroundColor: '#fff', fontSize: '14px', color: '#000', cursor: 'pointer' },
+    filtersRow: { display: 'flex', gap: '12px', marginBottom: '25px', flexWrap: 'wrap' },
+    dropdown: { flex: '1 1 130px', minWidth: '130px', padding: '12px 35px 12px 15px', border: '2px solid #000', borderRadius: '14px', backgroundColor: '#fff', fontSize: '14px', fontWeight: '600', color: '#000', cursor: 'pointer', appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none', backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center', backgroundSize: '16px', outline: 'none', transition: 'transform 0.15s ease, box-shadow 0.15s ease' },
     taskList: { display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '25px' },
     taskCard: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', border: '2px solid #000', borderRadius: '18px', padding: '15px', transition: 'all 0.2s ease', gap: '10px' },
     leftSection: { display: 'flex', alignItems: 'flex-start', gap: '12px' },
