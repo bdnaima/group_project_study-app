@@ -8,6 +8,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -19,7 +20,7 @@ const Login = () => {
     );
 
     if (!foundUser) {
-      alert("Invalid credentials. Please try again.");
+      setErrorMsg("Invalid email or password. Please try again.");
       return;
     }
 
@@ -30,6 +31,7 @@ const Login = () => {
     }
 
     localStorage.setItem("currentUser", JSON.stringify(foundUser));
+    setErrorMsg("");
     navigate("/dashboard");
   };
 
@@ -83,6 +85,7 @@ const Login = () => {
           </div>
 
           <button type="submit">Login</button>
+          {errorMsg && <div className="errorMsg">{errorMsg}</div>}
         </form>
 
         <p className="switch-auth">
