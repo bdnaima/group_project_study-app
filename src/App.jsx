@@ -7,6 +7,7 @@ import Tasks from "./pages/Tasks";
 import ForgotPassword from "./pages/ForgotPassword";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Resources from './pages/Resources';
 import "./App.css";
 
 const App = () => {
@@ -32,6 +33,7 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route path="/resources" element={<Resources />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
       </Routes>
     </BrowserRouter>
