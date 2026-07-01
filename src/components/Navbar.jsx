@@ -37,7 +37,7 @@ function Navbar() {
 
   return (
     <nav style={styles.navbar}>
-      <div style={styles.logo}>StudyApp</div>
+      <div style={styles.logo}>Study Planner</div>
 
       {/* Göm länkarna om användaren är på login/register */}
       {!isAuthPage && (
