@@ -58,6 +58,14 @@ function Navbar() {
           >
             Tasks
           </Link>
+          <Link
+            to="/resources"
+            style={styles.link}
+            onMouseEnter={handleMouseEnterLink}
+            onMouseLeave={handleMouseLeaveLink}
+          >
+            Resources
+          </Link>
           <button
             onClick={handleLogout}
             style={styles.logoutBtn}
